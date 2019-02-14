@@ -133,3 +133,4 @@ eval "$(pyenv virtualenv-init -)"
 
 export PATH="/snap/bin:$PATH"
 alias dotfiles='/usr/bin/git --git-dir=/home/arun/code/dotfiles/ --work-tree=/home/arun'
+export GPG_TTY=$(tty)
