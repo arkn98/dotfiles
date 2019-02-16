@@ -72,15 +72,15 @@ module-margin-right = 0
 
 font-0 = lucy tewi:size=8;3
 ;font-1 = Siji:pixelsize=11;3
-font-1 = Material Icons:antialia=true:size=11;4
+font-1 = Material Icons:antialia=true:size=11;5
 
 tray-position = right
 tray-padding = 1
 tray-transparent = true
 
-modules-left = menu i3 wlan
+modules-left = menu i3 wlan ethernet
 modules-center = temperature cpu memory
-modules-right = mail date battery
+modules-right = mail backlight volume date battery
 
 
 ;**********************************************************
@@ -114,38 +114,89 @@ label-visible-foreground = #666
 ;label-visible-background = ${colors.bg-alt}
 label-visible-padding = 0
 
+[module/volume]
+type = internal/pulseaudio
+; Use PA_VOLUME_UI_MAX (~153%) if true, or PA_VOLUME_NORM (100%) if false
+; Default: true
+use-ui-max = false
+
+; Interval for volume increase/decrease (in percent points)
+; Default: 5
+interval = 5
+
+format-volume = <ramp-volume> <label-volume>
+
+format-muted = <label-muted>
+
+label-volume = "%percentage%% "
+label-muted = "  "
+
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+ramp-volume-3 = 
+ramp-volume-4 = 
+
 [module/cpu]
 type = internal/cpu
 interval = 2
-format-prefix = " "
-format-prefix-foreground = ${colors.blue}
+format-prefix = " "
+;format-prefix-foreground = ${colors.blue}
 label = "%percentage%% "
 
 [module/memory]
 type = internal/memory
 interval = 2
 format-prefix = " "
-format-prefix-foreground = ${colors.green}
+;format-prefix-foreground = ${colors.green}
 label = "%percentage_used%% "
+
+[module/backlight]
+type = internal/backlight
+card = acpi_video0
+format = " <label>"
+label = "%percentage%% "
 
 [module/wlan]
 type = internal/network
-interface = wlo1
+interface = wlp2s0
 interval = 3.0
 
 format-connected = <ramp-signal> <label-connected>
 
-label-connected = "%essid% "
+label-connected = " %essid% %downspeed:3% "
 label-connected-foreground = ${colors.fg}
-;label-disconnected = %ifname% disconnected
+label-disconnected =
 ;label-disconnected-foreground = ${colors.fg-alt}
 
-ramp-signal-0 = 
-ramp-signal-1 = 
-ramp-signal-2 = 
-ramp-signal-3 = 
-ramp-signal-4 = 
+ramp-signal-0 = " "
+ramp-signal-1 = " "
+ramp-signal-2 = " "
+ramp-signal-3 = " "
+ramp-signal-4 = " "
 ramp-signal-foreground = ${colors.red}
+
+[module/ethernet]
+type = internal/network
+interface = enp4s0
+interval = 3.0
+
+format-connected = <ramp-signal> <label-connected>
+
+label-connected = "%downspeed:3% "
+label-connected-foreground = ${colors.fg}
+
+; Default: (none)
+;label-disconnected =
+;label-disconnected-foreground = #66ffffff
+
+; Only applies if <ramp-signal> is used
+ramp-signal-0 = " "
+ramp-signal-1 = " "
+ramp-signal-2 = " "
+ramp-signal-3 = " "
+ramp-signal-4 = " "
+ramp-signal-5 = " "
 
 [module/battery]
 type = internal/battery
@@ -160,9 +211,6 @@ format-discharging = <ramp-capacity> <label-discharging>
 label-full = " full "
 format-full-prefix = 
 format-full-prefix-foreground = ${colors.cyan}
-
-;format-charging-prefix = 
-;format-charging-prefix-foreground = ${colors.red}
 
 ramp-capacity-0 = 
 ramp-capacity-1 = 
@@ -182,80 +230,51 @@ animation-charging-framerate = 750
 type = internal/temperature
 thermal-zone = 0
 warn-temperature = 60
-
 format = <ramp> <label>
 format-warn = <ramp> <label-warn>
-
 label = "%temperature% "
 label-warn = "%temperature% "
 label-warn-foreground = ${colors.red}
-
-ramp-0 = 
-ramp-1 = 
-ramp-2 = 
-ramp-foreground = ${colors.cyan}
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
 
 [module/menu]
 type = custom/menu
 margin-right = 1
-
 expand-right = true
 menu-0-0 = " Power "
 menu-0-0-exec = menu-open-1
-
 menu-1-0 = " Shutdown "
 menu-1-0-exec = menu-open-2
 menu-1-1 = " Restart "
-menu-1-1-exec = systemctl reboot
-
+menu-1-1-exec = menu-open-3
 menu-2-0 = " Are you sure? "
 menu-2-1 = " No "
 menu-2-2 = " Yes "
 menu-2-2-exec = systemctl poweroff
-
 menu-3-0 = " Reboot? "
 menu-3-1 = " No "
 menu-3-2 = " Yes "
 menu-3-2-exec = systemctl reboot
-
-label-open = "   "
+label-open = "  "
 label-close = "  "
-
 label-separator = " | "
-;content = ""
-;content-foreground = ${colors.cyan}
-;content-background = ${colors.red}
-;click-left = ~/.config/polybar/menu
 
 [module/mail]
 type = custom/script
 interval = 1200
 format = " <label> "
 format-prefix = " "
-;format-prefix-foreground = ${colors.red}
 exec = ~/.config/polybar/mail
 exec-if = "ping -q -w 2 -c 1 8.8.8.8 > /dev/null"
 
 [module/date]
 type = internal/date
 interval = 5
-
 date =
 date-alt = " %a %d %b %Y"
-
-time = " %H:%M%p "
-time-alt = " %H:%M%p "
-
+time = " %I:%M%p "
+time-alt = " %I:%M%p "
 label = %date%%time%
-
 format-prefix = 
-;format-foreground = ${colors.magenta}
-;format-prefix-foreground = ${colors.magenta}
-
-[module/vpn]
-type = custom/script
-interval = 1200
-format = "<label> "
-format-prefix = " "
-format-prefix-foreground = ${colors.magenta}
-exec = ~/.config/polybar/vpn
