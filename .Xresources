@@ -72,6 +72,7 @@ URxvt.matcher.button:          1
 
 !! Tabs
 URxvt.tabbed.tabbar-bg:  -1
+
 URxvt.tabbed.tabbar-fg:  -2
 URxvt.tabbed.tab-bg:     -2
 URxvt.tabbed.tab-fg:     -1
@@ -90,4 +91,4 @@ URxvt.iso14755_52:         false
 !Xcursor.theme:             Venom
 
 !! Color theme
-#include "/home/arun/.colors/wal"
+#include "/home/arun/.colors/termtor"

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-wal -i ~/Pictures/wallpapers/space.jpg -n -R
-feh --bg-fill ~/Pictures/wallpapers/mountain.jpg
+#wal -i ~/Pictures/wallpapers/newyork.jpg -n -R
+feh --bg-fill ~/Pictures/wallpapers/newyork.jpg
 
 xrdb -merge ~/.Xresources
 

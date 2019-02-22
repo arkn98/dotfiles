@@ -63,7 +63,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git gitfast)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -136,3 +136,6 @@ HISTFILE=~/.zsh_history
 # key bindings
 bindkey "\033[1~" beginning-of-line
 bindkey "\033[4~" end-of-line
+
+# remove % from end of partial lines
+PROMPT_EOL_MARK=''
